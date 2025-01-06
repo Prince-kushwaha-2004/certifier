@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
 
-const baseUrl = "https://10.21.96.199:8000/certifier"
+const baseUrl = "http://localhost:8080/certifier"
 
 export const apicall = (method, contentType, url, data, params, cb) => {
     axios({

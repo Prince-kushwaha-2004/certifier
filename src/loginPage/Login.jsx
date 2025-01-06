@@ -26,7 +26,7 @@ export default function Login() {
             apicall("POST", "application/json", "login/", logindata, '', (data) => {
                 console.log(data)
                 dispatch(loginUser(data.user_data))
-                navigate("/")
+                navigate("/home")
                 toast.success(data.status)
             })
 
@@ -52,7 +52,7 @@ export default function Login() {
                 </form>
             </div>
             <Link to="/">
-                <div className="goback text-4xl absolute left-2 top-2 border text-white bg-gradient-to-r from-blue-700 to-blue-400 px-4 rounded-xl shadow-xl"><BiArrowBack /></div>
+                <div className="goback text-4xl absolute left-2 top-2 border text-black bg-gradient-to-r from-white to-blue-50 px-4 rounded-xl"><BiArrowBack /></div>
             </Link>
             <div className='w-0 lg:w-1/2 xl:w-3/5 bg-transparent flex flex-col justify-center items-center'>
 
