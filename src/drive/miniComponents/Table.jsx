@@ -3,7 +3,7 @@ import React from 'react'
 export default function Table() {
     return (
 
-        <div className="my-1.5 ">
+        <div className="my-1.5 me-8">
             <div className="min-w-full inline-block align-middle">
                 <div className="rounded-lg">
                     <table className="min-w-full divide-y divide-gray-200">

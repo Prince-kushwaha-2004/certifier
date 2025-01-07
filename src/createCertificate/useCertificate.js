@@ -9,6 +9,9 @@ export default function useCertificate() {
     const [downloadLink, setDownloadLink] = useState(null)
     const [indexNo, setIndexNo] = useState(-1)
     const [boxstyle, setBoxstyle] = useState({})
+    const [font, setFont] = useState('Fira Sans Condensed')
+    const [color, setColor] = useState('#000')
+
     const showimage = (e) => {
         let input = e.target
         if (input.files && input.files[0]) {
@@ -31,10 +34,13 @@ export default function useCertificate() {
                     left: `${event.clientX}px`,
                     top: `${event.clientY}px`,
                     leftno: event.clientX,
-                    topno: event.clientY
+                    topno: event.clientY,
+                    fontFamily: font,
+                    color: color,
+                    borderColor: color
                 }
                 setBoxstyle(style)
-                return { ...value, x1: x, y1: y, boxstyle: style }
+                return { ...value, x1: x, y1: y, font: font, color: color, boxstyle: style }
             } else {
                 return value
             }
@@ -70,7 +76,7 @@ export default function useCertificate() {
         if (data.length > 0 && data[data.length - 1].x2 == 0)
             return toast.error("Select an area on image first!")
         setFirst(true)
-        setData([...data, { key: "Input", align: "center", x1: 0, y1: 0, x2: 0, y2: 0 }])
+        setData([...data, { key: "Input", align: "center", "font": font, color: color, x1: 0, y1: 0, x2: 0, y2: 0 }])
         setIndexNo(indexNo + 1)
         console.log(data)
     }
@@ -107,7 +113,7 @@ export default function useCertificate() {
         image.disabled = false
         const formdata = new FormData(document.forms[0])
         let newdata = data.map((value) => {
-            return { "key": value.key, "align": value.align, "x1": value.x1, "y1": value.y1, "x2": value.x2, "y2": value.y2 }
+            return { "key": value.key, "align": value.align, "font": value.font, "color": value.color, "x1": value.x1, "y1": value.y1, "x2": value.x2, "y2": value.y2 }
         })
         const result = Object.groupBy(newdata, ({ key }) => key);
         let finalData = []
@@ -116,7 +122,7 @@ export default function useCertificate() {
             d["key"] = key
             let boxes = []
             for (let b in result[key]) {
-                boxes.push({ "align": result[key][b]["align"], "x1": result[key][b]["x1"], "y1": result[key][b]["y1"], "x2": result[key][b]["x2"], "y2": result[key][b]["y2"] })
+                boxes.push({ "color": result[key][b]["color"], "font": result[key][b]["font"], "align": result[key][b]["align"], "x1": result[key][b]["x1"], "y1": result[key][b]["y1"], "x2": result[key][b]["x2"], "y2": result[key][b]["y2"] })
             }
             d["boxes"] = boxes
             finalData.push(d)
@@ -140,6 +146,7 @@ export default function useCertificate() {
         setData([])
         document.querySelector("#img").setAttribute("src", "");
         setIsSelected(false)
+        setIndexNo(-1)
     }
     const changeAlign = (event) => {
         console.log(event.target.value)
@@ -151,6 +158,12 @@ export default function useCertificate() {
         })
         setData(newData)
     }
+    const changeFont = (event) => {
+        setFont(event.target.value)
+    }
+    const changeColor = (event) => {
+        setColor(event.target.value)
+    }
 
-    return { showimage, boxstart, drawbox, boxstop, addField, changetitle, handleDelete, handleSubmit, clearform, changeAlign, isSelected, first, data, downloadLink, indexNo, boxstyle }
+    return { showimage, boxstart, drawbox, boxstop, addField, changetitle, handleDelete, handleSubmit, clearform, changeAlign, changeFont, changeColor, isSelected, data, downloadLink, color }
 }

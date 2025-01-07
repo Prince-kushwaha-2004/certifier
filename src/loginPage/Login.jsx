@@ -1,13 +1,14 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { BiArrowBack } from "react-icons/bi";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { apicall } from '../../utils/services';
 import { validate } from '../../utils/validation';
 import { loginUser } from '../features/userSlice';
 export default function Login() {
     const [logindata, setLogindata] = useState({ email: '', password: '' })
+    const { userData } = useSelector(state => state.user)
     const dispatch = useDispatch()
     const navigate = useNavigate()
     const handleChange = (event) => {
@@ -16,6 +17,11 @@ export default function Login() {
             [event.target.name]: event.target.value
         })
     }
+    useEffect(() => {
+        if (userData && userData.name) {
+            navigate("/home")
+        }
+    }, [userData])
     const handleSubmit = (event) => {
         event.preventDefault()
         const emailvalid = validate("email", logindata.email)
