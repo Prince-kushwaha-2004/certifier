@@ -1,15 +1,17 @@
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import * as constants from '../src/constants';
+import { loadingStart, loadingStop } from '../src/features/loadingSlice';
+import store from '../src/store';
 
-const baseUrl = "http://localhost:8080/certifier"
+const instance = axios.create({
+    baseURL: constants.BASEURL
+});
 
-export const apicall = (method, contentType, url, data, params, cb) => {
-    axios({
+export const apicall = (method, url, data, params, cb) => {
+    instance({
         method: method,
-        url: `${baseUrl}/${url}`,
-        headers: {
-            'Content-Type': contentType,
-        },
+        url: url,
         withCredentials: true,
         data: data,
         params: params
@@ -18,7 +20,19 @@ export const apicall = (method, contentType, url, data, params, cb) => {
             cb(response.data)
         })
         .catch((error) => {
-
             toast.error(error.response.data.status)
         })
 }
+instance.interceptors.request.use(function (config) {
+    store.dispatch(loadingStart())
+    return config;
+}, function (error) {
+    return Promise.reject(error);
+});
+instance.interceptors.response.use(function (response) {
+    store.dispatch(loadingStop())
+    return response;
+}, function (error) {
+    store.dispatch(loadingStop())
+    return Promise.reject(error);
+});

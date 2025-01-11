@@ -1,0 +1,1 @@
+export const BASEURL = "https://10.21.98.112:8000/certifier/"

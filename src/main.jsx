@@ -7,10 +7,10 @@ import {
   RouterProvider
 } from "react-router-dom"
 import CreateCertificate from './createCertificate/CreateCertificate.jsx'
-import Dashboard from './dashboard/Dashboard.jsx'
 import Home from './drive/dashboard/Home.jsx'
 import MyDrive from './drive/MyDrive/MyDrive.jsx'
 import Downloads from './drive/pages/Downloads.jsx'
+import Folders from './drive/pages/Folders.jsx'
 import Recent from './drive/pages/Recent.jsx'
 import Stared from './drive/pages/Stared.jsx'
 import Trash from './drive/pages/Trash.jsx'
@@ -23,8 +23,7 @@ import store from "./store.js"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<Root />}>
-      <Route index element={<Dashboard />} />
-      <Route path="login" element={<Login />} />
+      <Route index element={<Login />} />
       <Route element={<AuthenticatedRoute />}>
         <Route path='home' element={<Home />} >
           <Route index element={<MyDrive />} />
@@ -32,6 +31,7 @@ const router = createBrowserRouter(
           <Route path='Recent' element={<Recent />} />
           <Route path='Stared' element={<Stared />} />
           <Route path='Trash' element={<Trash />} />
+          <Route path='Folders/:id' element={<Folders />} />
         </Route>
         <Route path="generateCertificate" element={<CreateCertificate />} />
       </Route>

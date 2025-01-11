@@ -32,7 +32,7 @@ export default function Nav() {
                     </div>
                     :
                     <Link to="login">
-                        <button className='bg-gradient-to-r from-blue-600 to-blue-400 text-xl px-8 py-2 text-white rounded-lg font-bold' >
+                        <button className='bg-gradient-to-r from-blue-600 to-blue-400 text-xl px-8 py-2  text-white rounded-lg font-bold' >
                             Login
                         </button>
                     </Link>

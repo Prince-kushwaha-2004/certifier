@@ -5,6 +5,6 @@ export const AuthenticatedRoute = () => {
     const { userData } = useSelector(state => state.user)
     return (
         // userData && userData.name ? <Outlet /> : <Outlet />
-        userData && userData.name ? <Outlet /> : <Navigate to='/login' />
+        userData && userData.name ? <Outlet /> : <Navigate to='/' />
     )
 }

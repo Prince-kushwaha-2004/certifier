@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { apicall } from '../../utils/services';
+import * as constants from '../constants';
 
 export default function useCertificate() {
     const [isSelected, setIsSelected] = useState(false)
@@ -9,8 +10,8 @@ export default function useCertificate() {
     const [downloadLink, setDownloadLink] = useState(null)
     const [indexNo, setIndexNo] = useState(-1)
     const [boxstyle, setBoxstyle] = useState({})
-    const [font, setFont] = useState('Fira Sans Condensed')
-    const [color, setColor] = useState('#000')
+    const [font, setFont] = useState({ key: 1, font: 'Fira Sans Condensed' })
+    const [color, setColor] = useState('#000000')
 
     const showimage = (e) => {
         let input = e.target
@@ -24,8 +25,8 @@ export default function useCertificate() {
         }
     }
     const boxstart = (event) => {
-        let x = (event.nativeEvent.offsetX / event.target.width) * event.target.naturalWidth
-        let y = (event.nativeEvent.offsetY / event.target.height) * event.target.naturalHeight
+        let x = Math.round((event.nativeEvent.offsetX / event.target.width) * event.target.naturalWidth)
+        let y = Math.round((event.nativeEvent.offsetY / event.target.height) * event.target.naturalHeight)
         let newData = data.map((value, index) => {
             if (index == indexNo && first) {
                 setFirst(false)
@@ -35,12 +36,12 @@ export default function useCertificate() {
                     top: `${event.clientY}px`,
                     leftno: event.clientX,
                     topno: event.clientY,
-                    fontFamily: font,
+                    fontFamily: font.font,
                     color: color,
                     borderColor: color
                 }
                 setBoxstyle(style)
-                return { ...value, x1: x, y1: y, font: font, color: color, boxstyle: style }
+                return { ...value, x1: x, y1: y, font: font.key, color: color, boxstyle: style }
             } else {
                 return value
             }
@@ -48,10 +49,9 @@ export default function useCertificate() {
         setData(newData)
     }
     const drawbox = (event) => {
-        let x = (event.nativeEvent.offsetX / event.target.width) * event.target.naturalWidth
-        let y = (event.nativeEvent.offsetY / event.target.height) * event.target.naturalHeight
+        let x = Math.round((event.nativeEvent.offsetX / event.target.width) * event.target.naturalWidth)
+        let y = Math.round((event.nativeEvent.offsetY / event.target.height) * event.target.naturalHeight)
         let newData = data.map((value, index) => {
-
             if (index == indexNo && !first) {
                 let style = {
                     ...boxstyle,
@@ -76,12 +76,10 @@ export default function useCertificate() {
         if (data.length > 0 && data[data.length - 1].x2 == 0)
             return toast.error("Select an area on image first!")
         setFirst(true)
-        setData([...data, { key: "Input", align: "center", "font": font, color: color, x1: 0, y1: 0, x2: 0, y2: 0 }])
+        setData([...data, { key: "Input", align: "center", "font": font.key, color: color, x1: 0, y1: 0, x2: 0, y2: 0 }])
         setIndexNo(indexNo + 1)
-        console.log(data)
     }
     const changetitle = (event) => {
-        console.log(event.target.attributes.index.value, event.target.value)
         let newData = data.map((value, index) => {
             if (index == event.target.attributes.index.value) {
                 return { ...value, key: event.target.value }
@@ -128,13 +126,11 @@ export default function useCertificate() {
             finalData.push(d)
         }
         formdata.set("format", JSON.stringify(finalData))
-
-        console.log(finalData)
-
-        apicall("post", undefined, "generate-certificate/", formdata, '', (data) => {
+        console.log("finaldata", JSON.stringify(finalData))
+        apicall("post", "generate-certificate/", formdata, '', (data) => {
             console.log(data)
             let route = data.route
-            setDownloadLink(`https://10.21.96.199:8000/certifier/${route}`)
+            setDownloadLink(`${constants.BASEURL}${route}?file_id=${data.file_id}`)
             console.log(downloadLink)
             toast.success(data.status)
         })
@@ -146,6 +142,7 @@ export default function useCertificate() {
         setData([])
         document.querySelector("#img").setAttribute("src", "");
         setIsSelected(false)
+        setDownloadLink(null)
         setIndexNo(-1)
     }
     const changeAlign = (event) => {
@@ -153,17 +150,40 @@ export default function useCertificate() {
         let newData = data.map((value, index) => {
             if (event.target.attributes.index.value == index) {
                 value.align = event.target.value
+                value.boxstyle = { ...value.boxstyle, justifyContent: event.target.value }
             }
             return value
         })
         setData(newData)
     }
     const changeFont = (event) => {
-        setFont(event.target.value)
+        setFont(JSON.parse(event.target.value))
+        console.log(JSON.parse(event.target.value))
+        if (indexNo + 1) {
+            let newData = data.map((value, index) => {
+                if (indexNo == index && value.boxstyle) {
+                    value.boxstyle = { ...value.boxstyle, fontFamily: JSON.parse(event.target.value).font }
+                    value = { ...value, font: JSON.parse(event.target.value).key }
+                }
+                return value
+            })
+            setData(newData)
+        }
+
     }
     const changeColor = (event) => {
         setColor(event.target.value)
-    }
+        if (indexNo + 1) {
+            let newData = data.map((value, index) => {
+                if (indexNo == index && value.boxstyle) {
+                    value.boxstyle = { ...value.boxstyle, color: event.target.value, borderColor: event.target.value }
+                    value = { ...value, color: event.target.value }
+                }
+                return value
+            })
+            setData(newData)
+        }
 
+    }
     return { showimage, boxstart, drawbox, boxstop, addField, changetitle, handleDelete, handleSubmit, clearform, changeAlign, changeFont, changeColor, isSelected, data, downloadLink, color }
 }
