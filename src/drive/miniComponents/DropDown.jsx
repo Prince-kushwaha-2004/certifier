@@ -2,20 +2,31 @@ import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { useState } from 'react';
 import toast from 'react-hot-toast';
 import { BsThreeDotsVertical } from "react-icons/bs";
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { apicall } from '../../../utils/services';
 import * as constants from '../../constants';
+import { addMove } from '../../features/moveSlice';
 import Delete from './Delete';
 import Rename from './Rename';
-export default function DropDown({ id, type, getData, setData, prev_name }) {
+export default function DropDown({ id, type, getData, setData, prev_name, getQuickAccess, setQuickAccess }) {
     const [rename, setRename] = useState(false)
     const [remove, setRemove] = useState(false)
+    const dispatch = useDispatch()
     const addToQuickAccess = () => {
-        toast.success("added to quick access")
+        apicall("patch", `file-manager/quick-access/${type}/`, '', { "folder_id": id }, (data) => {
+            getData()
+            getQuickAccess()
+            toast.success(data.status)
+        })
+    }
+    const moveFile = () => {
+        dispatch(addMove({ id, type }))
     }
     return (
         <Menu as="div" className="relative inline-block text-left">
             <div>
-                <MenuButton className="inline-flex w-full justify-center gap-x-1.5 text-xl rounded-md dark:bg-neutral-800 dark:text-white bg-white px-3 font-semibold text-gray-900  hover:bg-gray-50">
+                <MenuButton className="inline-flex w-full justify-center gap-x-1.5 text-xl bg-transparent rounded-md  dark:text-white px-3 font-semibold text-gray-900 ">
                     <BsThreeDotsVertical />
                 </MenuButton>
             </div>
@@ -62,6 +73,14 @@ export default function DropDown({ id, type, getData, setData, prev_name }) {
                             onClick={() => setRemove(true)}
                         >
                             Delete
+                        </div>
+                    </MenuItem>
+                    <MenuItem>
+                        <div
+                            className="block px-4 py-2 text-sm cursor-pointer text-gray-700 dark:text-white data-[focus]:bg-gray-100 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-900 data-[focus]:outline-none"
+                            onClick={moveFile}
+                        >
+                            Move
                         </div>
                     </MenuItem>
                 </div>

@@ -1,1 +1,1 @@
-export const BASEURL = "https://10.21.98.112:8000/certifier/"
+export const BASEURL = "https://10.21.96.163:8000/certifier/"

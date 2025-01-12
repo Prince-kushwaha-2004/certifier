@@ -12,6 +12,7 @@ export default function useCertificate() {
     const [boxstyle, setBoxstyle] = useState({})
     const [font, setFont] = useState({ key: 1, font: 'Fira Sans Condensed' })
     const [color, setColor] = useState('#000000')
+    const allowedTypes = ["text/csv", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "application/vnd.ms-excel"]
 
     const showimage = (e) => {
         let input = e.target
@@ -107,6 +108,9 @@ export default function useCertificate() {
         let csv = document.getElementById('data')
         if (csv.files.length == 0)
             return toast.error("Select Data in CSV formate")
+        if (!allowedTypes.includes(csv.files[0].type)) {
+            return toast.error("Wrong formate Select .CSV or .XLSX")
+        }
         let image = document.getElementById('image')
         image.disabled = false
         const formdata = new FormData(document.forms[0])

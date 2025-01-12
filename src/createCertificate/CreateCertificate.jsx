@@ -85,8 +85,8 @@ export default function CreateCertificate() {
                             })
                         }
                         <div className={isSelected && data.length ? 'block' : 'hidden'}>
-                            <label htmlFor="data" className="mx-2 text-slate-800 dark:text-neutral-300">Upload Data (.csv)</label>
-                            <input type="file" name="data" accept=".csv" id="data" className="block w-full border border-gray-300 dark:border-neutral-800 rounded-lg text-md focus:z-10 focus:border-blue-500 dark:bg-neutral-700 dark:text-white focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-200 file:border-0 file:me-4 file:py-3 file:px-4" />
+                            <label htmlFor="data" className="mx-2 text-slate-800 dark:text-neutral-300">Upload Data (csv, xls or xlsx)</label>
+                            <input type="file" name="data" accept=".csv,.xlsx,.xls" id="data" className="block w-full border border-gray-300 dark:border-neutral-800 rounded-lg text-md focus:z-10 focus:border-blue-500 dark:bg-neutral-700 dark:text-white focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none file:bg-gray-200 file:border-0 file:me-4 file:py-3 file:px-4" />
 
                             <div className='flex flex-row-reverse'>
                                 <button type='submit' className='bg-blue-500 px-4 py-2 m-2 text-white rounded-lg' >Generate</button>

@@ -22,7 +22,7 @@ export default function Header() {
                 <CiSearch className='text-xl text-slate-600 dark:text-white' />
                 <input type="text" placeholder='Search Drive ...' className='bg-transparent w-full focus:outline-none' />
             </div>
-            <div className="options hidden lg:flex gap-4 *:text-2xl *:text-gray-700 *:dark:text-white">
+            <div className="options hidden lg:flex gap-4 *:text-2xl *:text-gray-700 *:dark:text-white cursor-pointer">
                 {isDark ? <MdOutlineLightMode onClick={changeTheme} /> : <CiDark onClick={changeTheme} />}
 
             </div>
