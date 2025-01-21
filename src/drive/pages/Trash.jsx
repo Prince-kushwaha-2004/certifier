@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { FaAngleLeft, FaTrash } from "react-icons/fa";
+import { useSelector } from 'react-redux';
 import { Link, useParams } from "react-router-dom";
 import { apicall } from '../../../utils/services';
 import EmptyTrash from '../miniComponents/EmptyTrash';
@@ -8,13 +9,34 @@ export default function Trash() {
     const { id } = useParams();
     const [data, setData] = useState({})
     const [open, setOpen] = useState(false)
+    const [searchedData, setSearchedData] = useState({})
+    const { text } = useSelector(state => state.search)
     console.log(id)
     const getData = () => {
         apicall("get", "file-manager/trash/", '', '', (data) => {
             setData(data)
+            setSearchedData(data)
         })
     }
-
+    const search = () => {
+        let newData = data;
+        if (newData.files) {
+            let newFiles = newData.files.filter((value) => {
+                return (value.filename.toUpperCase().includes(text.toUpperCase()))
+            })
+            let newFolder = newData.folders.filter((value) => {
+                return (value.folder_name.toUpperCase().includes(text.toUpperCase()))
+            })
+            setSearchedData({ ...data, files: newFiles, folders: newFolder })
+            console.log(newFolder)
+        }
+        if (text == "") {
+            setSearchedData(data)
+        }
+    }
+    useEffect(() => {
+        search()
+    }, [text])
     useEffect(() => {
         getData()
     }, [id])
@@ -35,7 +57,7 @@ export default function Trash() {
                 >Empty Trash <FaTrash /></button>
 
             </div>
-            <Table2 data={data} getData={getData} setData={setData} />
+            <Table2 data={searchedData} getData={getData} setData={setData} />
             <EmptyTrash open={open} setOpen={setOpen} getData={getData} setData={setData} />
         </div >
     )

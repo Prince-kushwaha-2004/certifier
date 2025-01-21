@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { MdOutlineContentPaste } from "react-icons/md";
 import { VscNewFolder } from "react-icons/vsc";
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,9 +14,11 @@ import Table from '../miniComponents/Table';
 export default function MyDrive() {
     const [open, setOpen] = useState(false)
     const [data, setData] = useState({})
+    const [searchedData, setSearchedData] = useState({})
     const [quickAccess, setQuickAccess] = useState({})
     const [initialrender, setInitialrender] = useState(true)
     const move = useSelector(state => state.move)
+    const { text } = useSelector(state => state.search)
     const dispatch = useDispatch()
     const createFolder = () => {
         console.log(open)
@@ -30,6 +33,7 @@ export default function MyDrive() {
     const getData = () => {
         apicall("get", "file-manager/", '', '', (data) => {
             setData(data)
+            setSearchedData(data)
         })
     }
     const paste = () => {
@@ -39,6 +43,25 @@ export default function MyDrive() {
             toast.success(data.status)
         })
     }
+    const search = () => {
+        let newData = data;
+        if (newData.files) {
+            let newFiles = newData.files.filter((value) => {
+                return (value.filename.toUpperCase().includes(text.toUpperCase()))
+            })
+            let newFolder = newData.folders.filter((value) => {
+                return (value.folder_name.toUpperCase().includes(text.toUpperCase()))
+            })
+            setSearchedData({ ...data, files: newFiles, folders: newFolder })
+            console.log(newFolder)
+        }
+        if (text == "") {
+            setSearchedData(data)
+        }
+    }
+    useEffect(() => {
+        search()
+    }, [text])
     useEffect(() => {
         if (initialrender) {
             getData()
@@ -96,7 +119,7 @@ export default function MyDrive() {
                 <div className={`${move.id ? '' : "hidden"} me-8 flex flex-row-reverse justify-between font-bold items-center mb-8`}>
                     <button className='flex items-center gap-2 bg-blue-500 dark:bg-neutral-700 text-white  p-2 px-4 rounded-full' onClick={paste}><span className='hidden lg:block'> Paste</span> <MdOutlineContentPaste /></button>
                 </div>
-                <Table data={data} getData={getData} setData={setData} getQuickAccess={getQuickAccess} setQuickAccess={setQuickAccess} />
+                <Table data={searchedData} getData={getData} setData={setData} getQuickAccess={getQuickAccess} setQuickAccess={setQuickAccess} />
             </div>
             <NewFolder open={open} setOpen={setOpen} id={null} getData={getData} setData={setData} />
         </div>

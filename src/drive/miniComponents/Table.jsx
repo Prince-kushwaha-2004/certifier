@@ -99,7 +99,7 @@ export default function Table({ data, getData, setData, getQuickAccess, setQuick
                                                 {value.is_starred ? <FaStar className='text-yellow-500' /> : <FaRegStar />}
                                             </td>
                                             <td className=" py-4 ps-2 whitespace-nowrap text-end text-sm font-medium">
-                                                <DropDown id={value.id} type={"file"} getData={getData} setData={setData} prev_name={value.filename} getQuickAccess={getQuickAccess} setQuickAccess={setQuickAccess} />
+                                                <DropDown id={value.id} type={"file"} getData={getData} setData={setData} prev_name={value.filename} getQuickAccess={getQuickAccess} setQuickAccess={setQuickAccess} thumbnail={value.thumbnail} />
                                             </td>
                                         </tr>
                                     )

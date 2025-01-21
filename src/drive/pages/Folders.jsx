@@ -13,12 +13,15 @@ export default function Folders() {
     let { id } = useParams();
     const [data, setData] = useState({})
     const [open, setOpen] = useState(false)
+    const [searchedData, setSearchedData] = useState({})
+    const { text } = useSelector(state => state.search)
     const move = useSelector(state => state.move)
     const dispatch = useDispatch()
     console.log(id)
     const getData = () => {
         apicall("get", "file-manager/", '', { folder_id: id }, (data) => {
             setData(data)
+            setSearchedData(data)
         })
     }
     const removeQuickAccess = () => {
@@ -36,6 +39,25 @@ export default function Folders() {
             toast.success(data.status)
         })
     }
+    const search = () => {
+        let newData = data;
+        if (newData.files) {
+            let newFiles = newData.files.filter((value) => {
+                return (value.filename.toUpperCase().includes(text.toUpperCase()))
+            })
+            let newFolder = newData.folders.filter((value) => {
+                return (value.folder_name.toUpperCase().includes(text.toUpperCase()))
+            })
+            setSearchedData({ ...data, files: newFiles, folders: newFolder })
+            console.log(newFolder)
+        }
+        if (text == "") {
+            setSearchedData(data)
+        }
+    }
+    useEffect(() => {
+        search()
+    }, [text])
     useEffect(() => {
         getData()
     }, [id])
@@ -53,13 +75,13 @@ export default function Folders() {
                 }
                 <div className='bg-blue-50 border hidden lg:block  p-2 rounded-full px-8'>
                     <Link to={`/home`}>
-                        <span>Home</span>
+                        <span className='hover:text-blue-500'>Home</span>
                     </Link>
                     {data && data.path ?
                         data.path.map((value) => {
                             return (
                                 <Link key={value.id} to={`/home/Folders/${value.id}`}>
-                                    <span>/{value.name}</span>
+                                    <span className='hover:text-blue-500'>/{value.name}</span>
                                 </Link>
                             )
                         })
@@ -72,7 +94,7 @@ export default function Folders() {
             <div className={`${move.id ? '' : "hidden"} flex flex-row-reverse justify-between font-bold items-center mb-8`}>
                 <button className='flex items-center gap-2 bg-blue-500 dark:bg-neutral-700 text-white  p-2 px-4 rounded-full' onClick={paste}><span className='hidden lg:block'> Paste</span> <MdOutlineContentPaste /></button>
             </div>
-            <Table data={data} getData={getData} setData={setData} />
+            <Table data={searchedData} getData={getData} setData={setData} />
             <NewFolder open={open} setOpen={setOpen} id={id} getData={getData} setData={setData} />
         </div >
     )

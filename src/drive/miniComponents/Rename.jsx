@@ -6,10 +6,14 @@ import { apicall } from '../../../utils/services';
 export default function Rename({ rename, setRename, id, type, getData, setData, prev_name }) {
     const [foldername, setFoldername] = useState(type == "folder" ? prev_name : prev_name.slice(0, -4))
     const renamefile = () => {
-        apicall("patch", `file-manager/rename/${type}/`, '', { "folder_id": id, "new_name": foldername }, (data) => {
-            getData()
-            toast.success(data.status)
-        })
+        if (foldername) {
+            apicall("patch", `file-manager/rename/${type}/`, '', { "folder_id": id, "new_name": foldername }, (data) => {
+                getData()
+                toast.success(data.status)
+            })
+        } else {
+            toast.error("Enter valid Folder name")
+        }
         setRename(false)
         setFoldername(foldername)
     }

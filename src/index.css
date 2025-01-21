@@ -3,7 +3,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.loginpage{
+.loginpage {
   background-image: url('./src/assets/bg.png');
   background-size: cover;
 }

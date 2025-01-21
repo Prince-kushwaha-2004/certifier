@@ -9,7 +9,7 @@ import * as constants from '../../constants';
 import { addMove } from '../../features/moveSlice';
 import Delete from './Delete';
 import Rename from './Rename';
-export default function DropDown({ id, type, getData, setData, prev_name, getQuickAccess, setQuickAccess }) {
+export default function DropDown({ id, type, getData, setData, prev_name, getQuickAccess, setQuickAccess, thumbnail }) {
     const [rename, setRename] = useState(false)
     const [remove, setRemove] = useState(false)
     const dispatch = useDispatch()
@@ -51,6 +51,12 @@ export default function DropDown({ id, type, getData, setData, prev_name, getQui
                             </a>
                         }
                     </MenuItem>
+                    {type == "file" ?
+                        <a href={`${constants.BASEURL}media/${thumbnail}`} target="_blank" className="block px-4 py-2 text-sm text-gray-700 dark:text-white data-[focus]:bg-gray-100 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-900 data-[focus]:outline-none">
+                            Preview</a>
+                        :
+                        ''
+                    }
                     <MenuItem>
                         <div
                             className="block px-4 py-2 text-sm cursor-pointer text-gray-700 dark:text-white data-[focus]:bg-gray-100 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-900 data-[focus]:outline-none"
