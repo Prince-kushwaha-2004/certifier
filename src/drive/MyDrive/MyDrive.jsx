@@ -95,7 +95,7 @@ export default function MyDrive() {
                         {quickAccess.files.length ?
                             quickAccess.files.map((value, index) => {
                                 return (
-                                    <a key={index} href={`${constants.BASEURL}download-zip?file_id=${value.id}`}>
+                                    <a key={index} href={`${constants.BASEURL}download-zip/?file_id=${value.id}`}>
                                         <File folderName={value.filename} />
                                     </a>
 

@@ -46,7 +46,7 @@ export default function DropDown({ id, type, getData, setData, prev_name, getQui
                                 </div>
                             </Link>
                             :
-                            <a href={`${constants.BASEURL}download-zip?file_id=${id}`} className="block px-4 py-2 text-sm text-gray-700 dark:text-white data-[focus]:bg-gray-100 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-900 data-[focus]:outline-none">
+                            <a href={`${constants.BASEURL}download-zip/?file_id=${id}`} className="block px-4 py-2 text-sm text-gray-700 dark:text-white data-[focus]:bg-gray-100 data-[focus]:text-gray-900 dark:data-[focus]:text-gray-900 data-[focus]:outline-none">
                                 Download
                             </a>
                         }

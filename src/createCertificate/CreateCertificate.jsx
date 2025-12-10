@@ -29,7 +29,7 @@ export default function CreateCertificate() {
                         <button type='button' className='bg-white hover:bg-red-600 hover:text-white hover:border-red-600 shadow border border-black  px-4 py-2 m-2 text-black font-bold rounded-full' onClick={clearform}>X</button>
                     </div>
                     <label htmlFor="image" className='overflow-hidden mt-4 rounded-xl border-slate-500 mx-8' style={!isSelected ? { cursor: "pointer" } : { cursor: "crosshair", border: "1px solid gray" }}>
-                        <img src="" id='img' alt="" className={isSelected ? 'w-full h-full' : ""} onMouseDown={boxstart} onMouseMove={drawbox} onMouseUp={boxstop} />
+                        <img src="" id='img' alt="" draggable={false} className={isSelected ? 'w-full h-full' : ""} onMouseDown={boxstart} onMouseMove={drawbox} onMouseUp={boxstop} />
                         <h1 className={isSelected ? 'hidden' : 'flex flex-col items-center justify-center border-2 border-gray-300 dark:border-neutral-600 border-dashed rounded-xl cursor-pointer bg-gray-50 dark:bg-neutral-700 hover:bg-gray-100 overflow-hidden p-16'}>
                             <svg className="w-12 h-12 mb-4 text-gray-500 dark:text-neutral-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
                                 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2" />

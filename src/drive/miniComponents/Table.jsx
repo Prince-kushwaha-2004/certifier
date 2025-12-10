@@ -83,7 +83,7 @@ export default function Table({ data, getData, setData, getQuickAccess, setQuick
                                     return (
                                         <tr key={index} className={(move.id == value.id && move.type == "file") ? `bg-gray-200` : ''}>
                                             <td >
-                                                <a href={`${constants.BASEURL}download-zip?file_id=${value.id}`} className=" py-4 ps-2 whitespace-nowrap text-sm font-medium flex items-center gap-2 cursor-pointer text-gray-800 dark:text-white">
+                                                <a href={`${constants.BASEURL}download-zip/?file_id=${value.id}`} className=" py-4 ps-2 whitespace-nowrap text-sm font-medium flex items-center gap-2 cursor-pointer text-gray-800 dark:text-white">
                                                     <img src="https://cdn.iconscout.com/icon/free/png-256/free-zip-file-format-icon-download-in-svg-png-gif-formats--document-export-archive-pack-files-folders-icons-489644.png" className='w-6' alt="" /> {value.filename}
                                                 </a>
                                             </td>

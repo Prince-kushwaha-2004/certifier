@@ -1,1 +1,1 @@
-export const BASEURL = "http://localhost:8000/certifier/"
+export const BASEURL = "https://manthan.kiet.edu/certifier/certifier/"
