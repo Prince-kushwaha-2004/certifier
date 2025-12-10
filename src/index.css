@@ -4,6 +4,6 @@
 @tailwind utilities;
 
 .loginpage {
-  background-image: url('./src/assets/bg.png');
+  background-image: url('/bg.png');
   background-size: cover;
 }
